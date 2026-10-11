@@ -7,6 +7,7 @@ import com.skytech.service.BannerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,19 +39,24 @@ public class BannerController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/api/banner")
-    public ResponseEntity<ResponseObject<BannerResponse>> create(@RequestBody BannerRequest request) {
+    @PostMapping(value = "/api/banner", consumes = "multipart/form-data")
+    public ResponseEntity<ResponseObject<BannerResponse>> create(
+            @RequestPart("data") BannerRequest request,
+            @RequestPart("image") MultipartFile image) {
         ResponseObject<BannerResponse> response = new ResponseObject<>();
         response.setSuccess(true);
-        response.setData(service.create(request));
+        response.setData(service.create(request, image));
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/api/banner/{id}")
-    public ResponseEntity<ResponseObject<BannerResponse>> update(@PathVariable Long id, @RequestBody BannerRequest request) {
+    @PutMapping(value = "/api/banner/{id}", consumes = "multipart/form-data")
+    public ResponseEntity<ResponseObject<BannerResponse>> update(
+            @PathVariable Long id,
+            @RequestPart("data") BannerRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
         ResponseObject<BannerResponse> response = new ResponseObject<>();
         response.setSuccess(true);
-        response.setData(service.update(id, request));
+        response.setData(service.update(id, request, image));
         return ResponseEntity.ok(response);
     }
 

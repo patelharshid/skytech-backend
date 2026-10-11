@@ -10,7 +10,6 @@ import java.util.List;
 public class BannerRequest {
     private String title;
     private String subtitle;
-    private String image;
     private List<String> bullets;
     private Integer displayOrder;
     private Boolean isActive;
