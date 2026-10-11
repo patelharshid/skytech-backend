@@ -20,12 +20,12 @@ public class CryptoHelper {
     private static String appKey;
     private static String appIV;
 
-    @Value("${APP_KEY}")
+    @Value("${APP_KEY:}")
     public void setAppKey(String appKey) {
         CryptoHelper.appKey = appKey;
     }
 
-    @Value("${APP_IV}")
+    @Value("${APP_IV:}")
     public void setAppIV(String appIV) {
         CryptoHelper.appIV = appIV;
     }

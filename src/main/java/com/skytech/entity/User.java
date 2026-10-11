@@ -27,6 +27,9 @@ public class User {
     @Column(name = "mobileno", length = 20)
     private String mobileno;
 
+    @Column(name = "email", unique = true, length = 150)
+    private String email;
+
     @Column(name = "hashkey")
     private String hashkey;
 

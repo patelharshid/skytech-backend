@@ -3,6 +3,7 @@ package com.skytech.configuration;
 import com.skytech.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,15 +43,16 @@ public class JwtHelper {
         claims.put("lastName", user.getLastname());
         claims.put("fullName", fullName.trim());
         claims.put("mobileNo", user.getMobileno());
+        claims.put("tokenType", "access");
 
-        String subject = user.getMobileno() != null ? user.getMobileno() : String.valueOf(user.getId());
+        String subject = user.getEmail() != null ? user.getEmail() : String.valueOf(user.getId());
 
         return Jwts.builder()
                 .claims(claims)
                 .subject(subject)
                 .issuedAt(now)
                 .expiration(expiry)
-                .signWith(signingKey())
+                .signWith(signingKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -60,15 +62,16 @@ public class JwtHelper {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId());
+        claims.put("tokenType", "refresh");
 
-        String subject = user.getMobileno() != null ? user.getMobileno() : String.valueOf(user.getId());
+        String subject = user.getEmail() != null ? user.getEmail() : String.valueOf(user.getId());
 
         return Jwts.builder()
                 .claims(claims)
                 .subject(subject)
                 .issuedAt(now)
                 .expiration(expiry)
-                .signWith(signingKey())
+                .signWith(signingKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -80,6 +83,7 @@ public class JwtHelper {
                     .parseSignedClaims(refreshToken)
                     .getPayload();
 
+            if (!"refresh".equals(claims.get("tokenType", String.class))) return false;
             Object userIdObj = claims.get("userId");
             Long userId = null;
             if (userIdObj instanceof Number) {
@@ -99,6 +103,10 @@ public class JwtHelper {
                 .parseSignedClaims(token)
                 .getPayload();
 
+        if (!"access".equals(claims.get("tokenType", String.class))) {
+            throw new IllegalArgumentException("Invalid access token");
+        }
+
         Object userIdObj = claims.get("userId");
         Long userId = null;
         if (userIdObj instanceof Number) {
@@ -110,6 +118,7 @@ public class JwtHelper {
         user.setFirstname(claims.get("firstName", String.class));
         user.setLastname(claims.get("lastName", String.class));
         user.setMobileno(claims.get("mobileNo", String.class));
+        user.setEmail(claims.getSubject());
         return user;
     }
 
