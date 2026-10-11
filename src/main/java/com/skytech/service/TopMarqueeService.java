@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -58,10 +59,11 @@ public class TopMarqueeService {
     }
 
     public Boolean delete(Long id) {
-        if (!repository.existsById(id)) {
-            throw new CustomException("id", "TopMarquee record not found with id: " + id);
-        }
-        repository.deleteById(id);
+        TopMarquee marquee = getById(id);
+        marquee.setIsActive(false);
+        marquee.setUpdatedBy(1);
+        marquee.setUpdatedDateTime(LocalDateTime.now());
+        repository.save(marquee);
         return true;
     }
 }
