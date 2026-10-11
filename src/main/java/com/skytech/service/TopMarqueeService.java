@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +16,7 @@ public class TopMarqueeService {
     private final TopMarqueeRepository repository;
 
     public List<TopMarquee> getAll() {
-        return repository.findByIsActiveTrueOrderByCreatedDateTimeDesc();
+        return repository.findAllByOrderByCreatedDateTimeDesc();
     }
 
     public TopMarquee getById(Long id) {
@@ -58,12 +57,13 @@ public class TopMarqueeService {
         return repository.save(existing);
     }
 
-    public Boolean delete(Long id) {
-        TopMarquee marquee = getById(id);
-        marquee.setIsActive(false);
-        marquee.setUpdatedBy(1);
-        marquee.setUpdatedDateTime(LocalDateTime.now());
-        repository.save(marquee);
-        return true;
+    public TopMarquee setActive(Long id, Boolean isActive) {
+        if (isActive == null) {
+            throw new CustomException("isActive", "isActive is required");
+        }
+        TopMarquee existing = getById(id);
+        existing.setIsActive(isActive);
+        existing.setUpdatedBy(1);
+        return repository.save(existing);
     }
 }

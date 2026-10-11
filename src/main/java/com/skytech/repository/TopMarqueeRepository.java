@@ -10,4 +10,5 @@ import java.util.List;
 public interface TopMarqueeRepository extends JpaRepository<TopMarquee, Long> {
 
     List<TopMarquee> findByIsActiveTrueOrderByCreatedDateTimeDesc();
+    List<TopMarquee> findAllByOrderByCreatedDateTimeDesc();
 }

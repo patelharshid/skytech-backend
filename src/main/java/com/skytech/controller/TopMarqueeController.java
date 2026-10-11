@@ -50,10 +50,12 @@ public class TopMarqueeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseObject<Boolean>> delete(@PathVariable("id") Long id) {
-        ResponseObject<Boolean> response = new ResponseObject<>();
+    public ResponseEntity<ResponseObject<TopMarquee>> setActive(
+            @PathVariable("id") Long id,
+            @RequestBody TopMarqueeRequest request) {
+        ResponseObject<TopMarquee> response = new ResponseObject<>();
         response.setSuccess(true);
-        response.setData(service.delete(id));
+        response.setData(service.setActive(id, request.getIsActive()));
         return ResponseEntity.ok(response);
     }
 }
