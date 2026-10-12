@@ -40,3 +40,9 @@ CREATE TABLE IF NOT EXISTS banner_bullets (
     bullet TEXT NOT NULL,
     PRIMARY KEY (banner_id, display_order)
 );
+
+CREATE TABLE IF NOT EXISTS category (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    image_url TEXT
+);
