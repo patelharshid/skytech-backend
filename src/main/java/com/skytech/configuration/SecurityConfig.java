@@ -37,7 +37,9 @@ public class SecurityConfig {
                                 "/api/auth/renew-session",
                                 "/api/topmarquee/**",
                                 "/slides",
-                                "/api/category/**")
+                                "/api/category/**",
+                                "/api/brand/**",
+                                "/api/product/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
