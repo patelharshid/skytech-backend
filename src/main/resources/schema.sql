@@ -111,3 +111,21 @@ CREATE TABLE IF NOT EXISTS product_image (
     display_order INT NOT NULL DEFAULT 0,
     is_primary BOOLEAN NOT NULL DEFAULT FALSE
 );
+
+-- ==========================================
+-- 7. INQUIRY (Get in Touch with Us)
+-- ==========================================
+CREATE TABLE IF NOT EXISTS inquiry (
+    id BIGSERIAL PRIMARY KEY,
+    full_name VARCHAR(150) NOT NULL,
+    phone VARCHAR(30) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    message TEXT,
+    status VARCHAR(30) NOT NULL DEFAULT 'NEW',
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_inquiry_status ON inquiry(status);
+CREATE INDEX IF NOT EXISTS idx_inquiry_created_at ON inquiry(created_at);
+

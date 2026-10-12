@@ -39,7 +39,8 @@ public class SecurityConfig {
                                 "/slides",
                                 "/api/category/**",
                                 "/api/brand/**",
-                                "/api/product/**")
+                                "/api/product/**",
+                                "/api/inquiry/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
