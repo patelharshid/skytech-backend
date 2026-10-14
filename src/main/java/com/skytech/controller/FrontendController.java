@@ -4,7 +4,9 @@ import com.skytech.common.ResponseObject;
 import com.skytech.dto.BannerResponse;
 import com.skytech.dto.FrontendProductDetailDto;
 import com.skytech.dto.FrontendProductDto;
+import com.skytech.dto.InquiryRequest;
 import com.skytech.entity.Category;
+import com.skytech.entity.Inquiry;
 import com.skytech.entity.TopMarquee;
 import com.skytech.service.FrontendService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +60,14 @@ public class FrontendController {
         ResponseObject<FrontendProductDetailDto> response = new ResponseObject<>();
         response.setSuccess(true);
         response.setData(frontendService.getProductDetailById(id));
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("saveInquiry")
+    public ResponseEntity<ResponseObject<Inquiry>> saveInquiry(@RequestBody InquiryRequest request) {
+        ResponseObject<Inquiry> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setData(frontendService.saveInquiry(request));
         return ResponseEntity.ok(response);
     }
 

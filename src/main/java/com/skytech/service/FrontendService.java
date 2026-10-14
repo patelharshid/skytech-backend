@@ -4,6 +4,7 @@ import com.skytech.configuration.AwsConfiguration;
 import com.skytech.dto.BannerResponse;
 import com.skytech.dto.FrontendProductDetailDto;
 import com.skytech.dto.FrontendProductDto;
+import com.skytech.dto.InquiryRequest;
 import com.skytech.entity.*;
 import com.skytech.error.CustomException;
 import com.skytech.repository.CategoryRepository;
@@ -32,6 +33,9 @@ public class FrontendService {
     CategoryRepository categoryRepository;
 
     @Autowired
+    InquiryService inquiryService;
+
+    @Autowired
     AwsConfiguration awsConfiguration;
 
     public List<TopMarquee> getAllTopMarquee() {
@@ -40,6 +44,10 @@ public class FrontendService {
 
     public List<BannerResponse> getAllBanner() {
         return bannerService.getActive();
+    }
+
+    public Inquiry saveInquiry(InquiryRequest request) {
+        return inquiryService.create(request);
     }
 
     public List<Category> getAllCategory() {
